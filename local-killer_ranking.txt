@@ -1,0 +1,79 @@
+<link rel="stylesheet" href="css/score-table.css">
+<?php
+
+
+//ini_set('display_errors', 'On');
+
+//ini_set('log_errors', 'On');
+//ini_set('error_log', 'errors/'.pathinfo(__FILE__, PATHINFO_FILENAME).'.log');
+
+//ini_set('zlib.output_compression', 'On');
+
+//require_once "common.inc";
+//require_once "db_common.inc";
+//require_once "web_template.inc";
+
+//$db = new ScoreDB();
+
+//$time_start = microtime(true);
+
+$killers =[
+  ['killer_name' => '@1killer_name','killer_count_total' => '@1killer_count_total','killer_count_freeze' => '@1killer_count_freeze'],
+  ['killer_name' => '@2killer_name','killer_count_total' => '@2killer_count_total','killer_count_freeze' => '@2killer_count_freeze'],
+  ['killer_name' => '@3killer_name','killer_count_total' => '@3killer_count_total','killer_count_freeze' => '@3killer_count_freeze']
+];
+
+//$query_time = microtime(true) - $time_start;
+
+//$wt = new WebTemplate();
+//$wt->add_head_contents('<meta name="robots" content="none" />');
+//$wt->add_head_contents('<link rel="stylesheet" type="text/css" href="./css/score-table.css">');
+//$wt->set_title("変愚蛮怒 スコア 死因ランキング");
+
+//$fp = $wt->main_contents_fp();
+$fp="";
+function user_fwrite($ins1,$ins2){
+  echo $ins2;
+}
+
+user_fwrite(
+    $fp,
+    <<<EOM
+<h2>変愚蛮怒 死因ランキング</h2>
+<table class="score one_row">
+<thead>
+<tr>
+<th>順位</th>
+<th>回数</th>
+<th>彫像・<br>麻痺状態</th>
+<th>死因</th>
+</tr>
+</thead>
+
+EOM
+);
+
+user_fwrite($fp, "<tboby>\n");
+$killer_rank = 0;
+foreach ($killers as $k) {
+    //$freeze = $k['killer_count_freeze'] > 0 ? "(".$k['killer_count_freeze'].")" : "";
+    $killer_rank++;
+    //$killer_name = h($k['killer_name']);
+    $killer_name = ($k['killer_name']);
+    user_fwrite(
+        $fp,
+        <<<EOM
+<tr>
+<td>$killer_rank</td>
+<td class="number">{$k['killer_count_total']}</td>
+<td class="number">{$k['killer_count_freeze']}</td>
+<td>$killer_name</td>
+</tr>
+
+EOM
+    );
+}
+user_fwrite($fp, "</tboby>\n");
+user_fwrite($fp, "</table>\n");
+
+//$wt->print_page();
